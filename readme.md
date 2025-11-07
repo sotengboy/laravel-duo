@@ -1,3 +1,33 @@
+function roundHalfDown($value)
+{
+    $value = (string)$value;
+
+    // pastikan selalu pakai titik sebagai decimal
+    $value = str_replace(',', '.', $value);
+
+    // pecah angka
+    if (strpos($value, '.') !== false) {
+        list($int, $dec) = explode('.', $value);
+    } else {
+        return number_format($value, 2, '.', '');
+    }
+
+    // padding desimal biar minimal 3 digit
+    $dec = str_pad($dec, 3, '0');
+
+    $firstTwo = substr($dec, 0, 2);   // digit ke-1 & ke-2
+    $third    = (int) $dec[2];        // digit ke-3
+
+    // jika digit ke-3 <= 5 → turun, jika >= 6 → naik
+    if ($third <= 5) {
+        $finalDec = $firstTwo;
+    } else {
+        $finalDec = str_pad((string)((int)$firstTwo + 1), 2, '0', STR_PAD_LEFT);
+    }
+
+    return $int . '.' . $finalDec;
+}
+
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 <p align="center">
